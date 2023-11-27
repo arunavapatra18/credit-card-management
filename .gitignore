@@ -1,3 +1,5 @@
-credit-card-env/
+credit-card/
+
+__pycache__/
 
 .env
