@@ -15,7 +15,7 @@ class UserModel(Model):
     class Meta:
         table = "users"
         
-    def generate_password_hash(self, password_str: str, salt: str):
+    def generate_password_hash(self, password_str: str):
         '''
         Method to hash passwords
         '''

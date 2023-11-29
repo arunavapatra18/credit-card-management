@@ -1,7 +1,10 @@
 from tortoise import Tortoise
+from tortoise import exceptions as TortoiseException
+from tortoise.queryset import Q
 
 from backend.auth.config import Config
-from backend.auth.models import User
+from backend.auth.exceptions import CustomException
+from backend.auth.models import LoginUser, User
 from backend.auth.schemas import UserModel
 
 async def db_init():
@@ -40,5 +43,14 @@ class DatabaseUtils:
         Checks whether user with email exists
         '''
         return await UserModel.exists(email=user.email)
-
+    
+    async def get_user_by_email(user_email: str):
+        '''
+        Gets a user by email
+        '''
+        try:
+            return await UserModel.get(Q(email = user_email))
+            
+        except TortoiseException.DoesNotExist:
+            raise CustomException.UserNotfoundException
         
