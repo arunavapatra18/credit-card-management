@@ -54,3 +54,5 @@ class DatabaseUtils:
         except TortoiseException.DoesNotExist:
             raise CustomException.UserNotfoundException
         
+    async def get_current_user()
+        
