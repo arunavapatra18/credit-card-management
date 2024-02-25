@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path="/home/arunavapatra18/credit-card-management/.env")
+load_dotenv(dotenv_path="/home/arunava/Documents/credit-card-management/.env")
 
 class Config:
     DATABASE_HOST = os.environ.get("DATABASE_HOST")

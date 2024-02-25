@@ -1,37 +1,16 @@
-from tortoise import Tortoise
+from fastapi import Header
+from pydantic import UUID4
 from tortoise import exceptions as TortoiseException
 from tortoise.queryset import Q
-
-from backend.auth.config import Config
-from backend.auth.exceptions import CustomException
-from backend.auth.models import LoginUser, User
+from backend.auth.auth import decode_token
+from backend.exceptions import CustomException
+from backend.auth.models import User
 from backend.auth.schemas import UserModel
+from tortoise.contrib.pydantic import pydantic_model_creator
+    
+user_model_pydantic = pydantic_model_creator(UserModel)   
 
-async def db_init():
-    '''
-    Initializes mySQL database
-    '''
-    print("Connecting to MySQL DB...")
-    await Tortoise.init(
-        db_url=Config.DATABASE_URI,
-        modules={
-            "models": ["backend.auth.schemas"]
-            }
-    )
-    
-    print("Generating schema...")
-    await Tortoise.generate_schemas()
-    
-    print("Connection established!")
-    
-async def db_close():
-    '''
-    Close db connection
-    '''
-    await Tortoise.close_connections()
-    print("Connection closed!")
-    
-class DatabaseUtils:
+class AuthDatabaseUtils:
     async def save_user(user: UserModel):
         '''
         Save the Tortoise ORM User Model to DB
@@ -50,9 +29,18 @@ class DatabaseUtils:
         '''
         try:
             return await UserModel.get(Q(email = user_email))
-            
         except TortoiseException.DoesNotExist:
             raise CustomException.UserNotfoundException
         
-    async def get_current_user()
+    async def get_user_by_id(id: UUID4):
+        try:
+            return await UserModel.get(Q(id = id))
+        except TortoiseException.DoesNotExist:
+            raise CustomException.UserNotfoundException
         
+def get_current_user(token: str = Header(...)):
+    try:
+        user_id = decode_token(token)
+        return user_id
+    except TortoiseException.DoesNotExist:
+        raise CustomException.UserNotfoundException

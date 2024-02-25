@@ -5,9 +5,9 @@ from backend.auth.controller import login_user, register_user
 from backend.auth.models import LoginUser, User
 
 
-router = APIRouter()
+auth_router = APIRouter()
 
-@router.post("/register")
+@auth_router.post("/register")
 async def register(user: User):
     '''
     API Endpoint to Register a User
@@ -15,7 +15,7 @@ async def register(user: User):
     jwt_token = await register_user(user)
     return {"message": "User registered successfully!"}
 
-@router.post("/login")
+@auth_router.post("/login")
 async def login(user: LoginUser):
     '''
     API Endpoint to Login a User
@@ -25,6 +25,6 @@ async def login(user: LoginUser):
     if valid_user:
         return sign_tokens(valid_user)
     
-@router.get("/")
+@auth_router.get("/")
 async def home():
     return {"hello"}
