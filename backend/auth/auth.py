@@ -51,7 +51,7 @@ def decode_token(token: str):
     
     try:
         decoded_token = jwt.decode(token, Config.JWT_TOKEN, algorithms=[Config.JWT_ALGORITHM])
-        return decode_token["sub"]  
+        return decoded_token["sub"]  
     except jwt.ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token expired")
     except jwt.InvalidTokenError:

@@ -16,3 +16,7 @@ class CustomException:
     class IncorrectPasswordOrEmailException(HTTPException):
         def __init__(self, detail="Incorrect password or email!"):
             super().__init__(status_code=status.HTTP_401_UNAUTHORIZED, detail=detail)
+
+    class CardAlreadyAddedException(HTTPException):
+        def __init__(self, detail="Card already added!"):
+            super().__init__(status_code=status.HTTP_409_CONFLICT, detail=detail)

@@ -1,6 +1,6 @@
-from backend.auth.app import create_auth_app
+from backend.main import create_app
 
-app = create_auth_app()
+app = create_app()
 
 if __name__ == "__main__":
     import uvicorn
